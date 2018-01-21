@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains dmc_floss.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function dmc_floss_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the dmc_floss module.
+    case 'help.page.dmc_floss':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('DMC Floss Database') . '</p>';
+      return $output;
+
+    default:
+  }
+}

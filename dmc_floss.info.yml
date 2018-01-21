@@ -1,0 +1,7 @@
+name: 'DMC Floss'
+type: module
+description: 'DMC Floss Database'
+package: 'Other'
+dependencies:
+  - drupal:node
+core: 8.x

@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_dmc_color_name
+    - node.type.dmc_thread_color
+id: node.dmc_thread_color.field_dmc_color_name
+field_name: field_dmc_color_name
+entity_type: node
+bundle: dmc_thread_color
+label: 'Color name'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
