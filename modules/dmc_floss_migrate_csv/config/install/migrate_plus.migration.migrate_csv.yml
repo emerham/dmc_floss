@@ -44,7 +44,7 @@ process:
   # The content (node) type we are creating is 'people'.
   type:
     plugin: default_value
-    default_value: dmc_floss
+    default_value: dmc_thread_color
   # Most fields can be mapped directly - we just specify the destination (D8)
   # field and the corresponding field name from above, and the values will be
   # copied in.
