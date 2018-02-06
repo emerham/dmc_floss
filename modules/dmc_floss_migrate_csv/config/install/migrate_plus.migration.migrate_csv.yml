@@ -52,6 +52,9 @@ process:
   field_dmc_color_name: 'Color Name'
   field_dmc_quantity: 'Quantity'
   field_dmc_inventory_status: 'Status'
+  uid:
+    plugin: default_value
+    default_value: 1
 destination:
   # Here we're saying that each row of data (line from the CSV file) will be
   # used to create a node entity.
