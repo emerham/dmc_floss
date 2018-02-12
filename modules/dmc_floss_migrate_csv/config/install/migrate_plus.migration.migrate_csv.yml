@@ -11,6 +11,7 @@ id: dmc_floss_migrate_csv
 label: 'DMC Floss CSV Migration'
 migration_tags:
   - CSV
+migration_group: default
 source:
   plugin: csv
   # Full path to the file.
