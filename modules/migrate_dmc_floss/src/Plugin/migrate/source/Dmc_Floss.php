@@ -51,15 +51,14 @@ class Dmc_Floss extends SqlBase {
     $result = $this->getDatabase()->query('
       SELECT
         fld.field_color_name_value,
-        fld.field_color_name_format,
+        fld.field_color_name_format
       FROM
         {field_data_field_color_name} fld
       WHERE
         fld.entity_id = :nid
     ', [':nid' => $nid]);
     foreach ($result as $record) {
-      $row->setSourceProperty('field_color_name_value', $record->field_color_name_value);
-      $row->setSourceProperty('field_color_name_vormat', $record->field_color_name_format);
+      $row->setSourceProperty('field_color_name', $record->field_color_name_value);
     }
     return parent::prepareRow($row);
   }
@@ -82,7 +81,7 @@ class Dmc_Floss extends SqlBase {
       'promote' => $this->t('Promoted to front page'),
       'sticky' => $this->t('Sticky at top of lists'),
       'language' => $this->t('Language (en)'),
-      'field_color_name_value' => $this->t('Floss Color'),
+      'field_color_name' => $this->t('Floss Color'),
     ];
     return $fields;
   }
