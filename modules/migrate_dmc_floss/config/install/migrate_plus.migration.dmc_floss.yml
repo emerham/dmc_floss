@@ -1,0 +1,32 @@
+id: dmc_floss
+label: DMC Floss node migration from Drupal 7
+migration_tags:
+  - floss
+migration_group: custom
+dependencies:
+  enforced:
+    module:
+      - migrate_dmc_floss
+source:
+  plugin: dmc_floss
+destination:
+  plugin: entity:node
+  bundle: dmc_thread_color
+process:
+  nid: nid
+  vid: vid
+  type: type
+  langcode:
+    plugin: static_map
+    bypass: true
+    source: language
+    map:
+      und: en
+  title: title
+  uid: uid
+  status: status
+  created: created
+  changed: changed
+  promote: promote
+  sticky: sticky
+  field_dmc_color_name: field_color_name
