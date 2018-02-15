@@ -30,3 +30,5 @@ process:
   promote: promote
   sticky: sticky
   field_dmc_color_name: field_color_name
+  field_dmc_quantity: field_quantity
+  field_dmc_inventory_status: field_have_need

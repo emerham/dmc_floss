@@ -47,11 +47,10 @@ class Dmc_Floss extends SqlBase {
 
   public function prepareRow(Row $row) {
     $nid = $row->getSourceProperty('nid');
-
+    // Floss Color name.
     $result = $this->getDatabase()->query('
       SELECT
-        fld.field_color_name_value,
-        fld.field_color_name_format
+        fld.field_color_name_value
       FROM
         {field_data_field_color_name} fld
       WHERE
@@ -60,6 +59,27 @@ class Dmc_Floss extends SqlBase {
     foreach ($result as $record) {
       $row->setSourceProperty('field_color_name', $record->field_color_name_value);
     }
+    // Quantity field.
+    $result = $this->getDatabase()->query('
+      SELECT
+        fld.field_quantity_value
+      FROM
+        {field_data_field_quantity} fld
+      WHERE
+        fld.entity_id = :nid
+    ', [':nid' => $nid]);
+    foreach ($result as $record) {
+      $row->setSourceProperty('field_quantity', $record->field_quantity_value);
+    }
+    // Inventory Status field.
+    $result = $this->getDatabase()->query('
+      SELECT
+        fld.field_have_need_value
+      FROM
+        {field_data_field_have_need} fld
+      WHERE
+        fld.entity_value = :nid
+    ', [':nid' => $nid]);
     return parent::prepareRow($row);
   }
 
@@ -82,6 +102,8 @@ class Dmc_Floss extends SqlBase {
       'sticky' => $this->t('Sticky at top of lists'),
       'language' => $this->t('Language (en)'),
       'field_color_name' => $this->t('Floss Color'),
+      'field_quantity' => $this->t('Floss Quantity'),
+      'field_have_need' => $this->t('Inventory Status'),
     ];
     return $fields;
   }
