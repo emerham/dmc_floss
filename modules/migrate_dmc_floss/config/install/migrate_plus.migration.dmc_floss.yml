@@ -2,7 +2,7 @@ id: dmc_floss
 label: DMC Floss node migration from Drupal 7
 migration_tags:
   - floss
-migration_group: custom
+migration_group: emerham
 dependencies:
   enforced:
     module:

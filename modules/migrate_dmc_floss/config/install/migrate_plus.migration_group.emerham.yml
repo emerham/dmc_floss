@@ -1,0 +1,12 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+      module:
+        - migrate_dmc_floss
+id: emerham
+label: Emerham
+description: 'Migration Group for Migrations'
+source_type: 'Drupal 7'
+module: null
+shared_configuration: null

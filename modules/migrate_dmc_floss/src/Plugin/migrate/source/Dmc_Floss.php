@@ -78,8 +78,11 @@ class Dmc_Floss extends SqlBase {
       FROM
         {field_data_field_have_need} fld
       WHERE
-        fld.entity_value = :nid
+        fld.entity_id = :nid
     ', [':nid' => $nid]);
+    foreach ($result as $record) {
+      $row->setSourceProperty('field_have_need', $record->field_have_need_value);
+    }
     return parent::prepareRow($row);
   }
 
