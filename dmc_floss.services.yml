@@ -1,0 +1,4 @@
+services:
+  dmc_floss.flosscontent:
+    class: Drupal\dmc_floss\DmcFlossContent
+    arguments: []
