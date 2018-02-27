@@ -11,16 +11,17 @@
  *
  * @group dmc_floss
  */
+
 namespace Drupal\Tests\dmc_floss\Unit\FlossQuery;
 
 use Drupal\Tests\UnitTestCase;
 use Drupal\dmc_floss\DmcFlossContent;
-use PHPUnit_Framework_MockObject_MockObject;
 
 class UnitTestCaseTest extends UnitTestCase {
 
   /**
    * The mocked inventory system.
+   *
    * @var
    */
   protected $dmc_floss_service;
@@ -36,17 +37,25 @@ class UnitTestCaseTest extends UnitTestCase {
    * Checking inventory for a valid test.
    */
   public function testCheckInventory() {
+    $this->dmc_floss_service->expects($this->any())
+      ->method('checkInventory')
+      ->will($this->returnValueMap([
+        'status' => 'Have',
+        'count' => 1,
+      ]));
+    $this->assertArrayEquals($this->dmc_floss_service, ['status' => 'Have', 'count' => 1]);
+    /*
     $inventory_status_valid = $this->getMockBuilder('\Drupal\dmc_floss\DmcFlossContent')
       ->setConstructorArgs([
         $this->dmc_floss_service
       ])
       ->getMock();
     $inventory_status_valid->method('checkInventory')
-      ->willReturn('');
-    var_dump($inventory_status_valid);
-    $this->assertEquals($inventory_status_valid->field_dmc_inventory_status[0]->value, 'h');
-    $this->assertEquals($inventory_status_valid->field_dmc_quantity[0]->value, 1);
-
+      ->willReturn(['status' => 'Have', 'count' => '1']);
+    $first_result = $inventory_status_valid->checkInventory(150);
+    $this->assertEquals($first_result['status'], 'Have');
+    $this->assertEquals($first_result['count'], 1);
+    */
     /*
     $inventory_test = new DmcFlossContent();
     $inventory_test->checkInventory(150);
@@ -61,5 +70,8 @@ class UnitTestCaseTest extends UnitTestCase {
     $inventory_test->checkInventory(1);
     $this->assertEquals($inventory_test, NULL);
     */
+    $this->dmc_floss_service->method('checkInventory')
+      ->willReturn(NULL);
+    $this->assertEquals($this->dmc_floss_service->checkInventory(1), NULL);
   }
 }
