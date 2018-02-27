@@ -12,7 +12,7 @@ interface DmcFlossContentInterface {
    *
    * @param int $floss_id Floss ID number to check for inventory status.
    *
-   * @return mixed
+   * @return array
    */
   public function checkInventory($floss_id);
 
@@ -22,7 +22,7 @@ interface DmcFlossContentInterface {
    * @param int $floss_id Floss ID number to update Inventory on.
    * @param int $quantity Quantity to update for.
    *
-   * @return mixed
+   * @return bool
    */
   public function updateInventory($floss_id, $quantity);
 
@@ -32,7 +32,7 @@ interface DmcFlossContentInterface {
    * @param int $floss_id Floss ID number to update Status for.
    * @param string $status Status to update
    *
-   * @return mixed
+   * @return bool
    */
   public function updateStatus($floss_id, $status);
 
