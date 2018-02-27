@@ -20,14 +20,14 @@ class DmcFlossContent implements DmcFlossContentInterface {
    * {@inheritdoc}
    */
   public function checkInventory($floss_id) {
-    $result = $this->getNodeFromTitle($floss_id);
-    if (is_null($result)) {
+    $node = $this->getNodeFromTitle($floss_id);
+    if (is_null($node)) {
       return FALSE;
     }
     else {
       return [
-        'status' => $result->get('field_dmc_inventory_status')->value,
-        'count' => $result->get('field_dmc_quantity')->value,
+        'status' => $node->get('field_dmc_inventory_status')->value,
+        'count' => $node->get('field_dmc_quantity')->value,
       ];
     }
   }
@@ -36,8 +36,20 @@ class DmcFlossContent implements DmcFlossContentInterface {
    * {@inheritdoc}
    */
   public function updateInventory($floss_id, $quantity) {
-    // TODO: Implement updateInventory() method.
-    return FALSE;
+    // First check to make sure we have a valid node.
+    $node = $this->getNodeFromTitle($floss_id);
+    if (is_null($node)) {
+      return "Node with " . $floss_id . " Does not exist.";
+    }
+    else {
+      // Update the field value for the given node.
+      $node->set('field_dmc_quantity', $quantity);
+      // Or maybe this way?
+      $node->field_dmc_quantity->value =  $quantity;
+      // Save the node back to the DB.
+      $node->save();
+      return TRUE;
+    }
   }
 
   /**
