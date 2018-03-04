@@ -10,9 +10,11 @@ interface DmcFlossContentInterface {
   /**
    * Check the inventory status for the given node.
    *
-   * @param int $floss_id Floss ID number to check for inventory status.
+   * @param int $floss_id
+   *   Floss ID number to check for inventory status.
    *
-   * @return array
+   * @return bool|array
+   *   The array of Status and count or false if the id
    */
   public function checkInventory($floss_id);
 
