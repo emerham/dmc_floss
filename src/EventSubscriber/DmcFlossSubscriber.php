@@ -7,7 +7,6 @@ use Alexa\Request\LaunchRequest;
 use Alexa\Request\SessionEndedRequest;
 use Drupal\alexa\AlexaEvent;
 use Drupal\dmc_floss\DmcFlossContentInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -31,20 +30,6 @@ class DmcFlossSubscriber implements EventSubscriberInterface {
     $this->dmcFlossContent = $dmc_floss_content;
   }
 
-  /**
-   * Dependency injection.
-   *
-   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
-   *
-   * @return static
-   */
-  /*
-   public static function create(ContainerInterface $container) {
-    return new static(
-      $container->get('dmc_floss.floss_content')
-    );
-  }
-  */
   /**
    * Gets the event.
    */
