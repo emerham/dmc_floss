@@ -39,13 +39,11 @@ class DmcFlossContent implements DmcFlossContentInterface {
     // First check to make sure we have a valid node.
     $node = $this->getNodeFromTitle($floss_id);
     if (is_null($node)) {
-      return "Node with " . $floss_id . " Does not exist.";
+      return FALSE;
     }
     else {
       // Update the field value for the given node.
-      $node->set('field_dmc_quantity', $quantity);
-      // Or maybe this way?
-      $node->field_dmc_quantity->value =  $quantity;
+      $node->field_dmc_quantity->value = $quantity;
       // Save the node back to the DB.
       $node->save();
       return TRUE;
@@ -56,8 +54,19 @@ class DmcFlossContent implements DmcFlossContentInterface {
    * {@inheritdoc}
    */
   public function updateStatus($floss_id, $status) {
-    // TODO: Implement updateStatus() method.
-    return FALSE;
+    // First check to make sure we have a valid node.
+    $node = $this->getNodeFromTitle($floss_id);
+    if (is_null($node)) {
+      return FALSE;
+    }
+    else {
+      // Update the status of the floss.
+      $node->field_dmc_inventory_status->value = $status;
+      // Save the updated data back to the database.
+      $node->save();
+      // Return True.
+      return TRUE;
+    }
   }
 
   /**
@@ -65,7 +74,7 @@ class DmcFlossContent implements DmcFlossContentInterface {
    *
    * @param string $title The title to search on.
    *
-   * @return \Drupal\Core\Entity\EntityInterface|null|static
+   * @return \Drupal\Core\Entity\EntityInterface|\Drupal\dmc_floss\DmcFlossContent|null
    */
   protected function getNodeFromTitle($title) {
     $query = \Drupal::entityQuery('node');
@@ -76,6 +85,11 @@ class DmcFlossContent implements DmcFlossContentInterface {
     // Gets all the NID's that match our query.
     $node_id = $query->execute();
     // Load all the data from the node.
-    return node::load($node_id);
+    if (!empty($node_id)) {
+      return node::load(current($node_id));
+    } else {
+      return NULL;
+    }
+
   }
 }
