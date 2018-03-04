@@ -10,13 +10,6 @@ use Drupal\node\Entity\Node;
 class DmcFlossContent implements DmcFlossContentInterface {
 
   /**
-   * Constructs a new DmcFlossContent object.
-   */
-  public function __construct() {
-
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function checkInventory($floss_id) {
@@ -87,7 +80,8 @@ class DmcFlossContent implements DmcFlossContentInterface {
     // Load all the data from the node.
     if (!empty($node_id)) {
       return node::load(current($node_id));
-    } else {
+    }
+    else {
       return NULL;
     }
 
