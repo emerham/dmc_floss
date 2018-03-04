@@ -21,20 +21,26 @@ interface DmcFlossContentInterface {
   /**
    * Update the Inventory count for the given node.
    *
-   * @param int $floss_id Floss ID number to update Inventory on.
-   * @param int $quantity Quantity to update for.
+   * @param int $floss_id
+   *   Floss ID number to update Inventory on.
+   * @param int $quantity
+   *   Quantity to update for.
    *
    * @return bool
+   *   Returns True if it was able to update a Floss, False if not.
    */
   public function updateInventory($floss_id, $quantity);
 
   /**
    * Update the Status for the given node.
    *
-   * @param int $floss_id Floss ID number to update Status for.
-   * @param string $status Status to update
+   * @param int $floss_id
+   *   Floss ID number to update Status for.
+   * @param string $status
+   *   Status to update.
    *
    * @return bool
+   *   Returns True if it was able to update a Floss, False if not.
    */
   public function updateStatus($floss_id, $status);
 

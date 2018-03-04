@@ -3,7 +3,6 @@
 namespace Drupal\dmc_floss\EventSubscriber;
 
 use Alexa\Request\IntentRequest;
-use Alexa\Request\LaunchRequest;
 use Alexa\Request\SessionEndedRequest;
 use Drupal\alexa\AlexaEvent;
 use Drupal\dmc_floss\DmcFlossContentInterface;
@@ -15,7 +14,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 class DmcFlossSubscriber implements EventSubscriberInterface {
 
   /**
-   * \Drupal\dmc_floss\DmcFlossContent definition.
+   * Drupal\dmc_floss\DmcFlossContent definition.
    *
    * @var \Drupal\dmc_floss\DmcFlossContent
    */
@@ -24,7 +23,8 @@ class DmcFlossSubscriber implements EventSubscriberInterface {
   /**
    * DmcFlossSubscriber constructor.
    *
-   * @param \Drupal\dmc_floss\DmcFlossContent $dmc_floss_content
+   * @param \Drupal\dmc_floss\DmcFlossContentInterface $dmc_floss_content
+   *   The DmcFlossContent object.
    */
   public function __construct(DmcFlossContentInterface $dmc_floss_content) {
     $this->dmcFlossContent = $dmc_floss_content;
@@ -55,11 +55,13 @@ class DmcFlossSubscriber implements EventSubscriberInterface {
           $response->respond('Goodbye')
             ->endSession();
           break;
+
         case 'AMAZON.HelpIntent':
           // TODO add help text.
           $response->respond('Help text goes here.')
             ->endSession();
           break;
+
         case 'CheckStatus':
           $floss_id = $request->getSlot('floss_id');
           $inventory = $this->dmcFlossContent->checkInventory($floss_id);

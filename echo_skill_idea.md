@@ -27,5 +27,3 @@ Status can be Have, Need
 create {number}
   What is the color name?
 {color}
-  
-
