@@ -1,26 +1,18 @@
 <?php
-/**
- * @file
- * Contains \Drupal\migrate_dmc_floss\Plugin\migrate\source
- * Created by PhpStorm.
- * User: brabhamm
- * Date: 2/13/18
- * Time: 8:42 PM
- */
 
 namespace Drupal\migrate_dmc_floss\Plugin\migrate\source;
 
-use \Drupal\migrate\row;
-use \Drupal\migrate\Plugin\migrate\source\SqlBase;
+use Drupal\migrate\row;
+use Drupal\migrate\Plugin\migrate\source\SqlBase;
 
 /**
- * Drupal 7 DMC Floss Node
+ * Drupal 7 DMC Floss Node.
  *
  * @MigrateSource(
  *   id = "dmc_floss"
  * )
  */
-class Dmc_Floss extends SqlBase {
+class DmcFlossMigrate extends SqlBase {
 
   /**
    * {@inheritdoc}
@@ -45,6 +37,9 @@ class Dmc_Floss extends SqlBase {
     return $query;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function prepareRow(Row $row) {
     $nid = $row->getSourceProperty('nid');
     // Floss Color name.
@@ -120,6 +115,9 @@ class Dmc_Floss extends SqlBase {
     return $ids;
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function entityTypeId() {
     return 'node';
   }
@@ -130,4 +128,5 @@ class Dmc_Floss extends SqlBase {
   public function bundleMigrationRequired() {
     return FALSE;
   }
+
 }

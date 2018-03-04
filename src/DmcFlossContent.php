@@ -65,9 +65,11 @@ class DmcFlossContent implements DmcFlossContentInterface {
   /**
    * Load a node of type dmc_thread_color with the given title.
    *
-   * @param string $title The title to search on.
+   * @param string $title
+   *   The title to search on.
    *
    * @return \Drupal\Core\Entity\EntityInterface|\Drupal\dmc_floss\DmcFlossContent|null
+   *   Return a node object loaded from the given floss ID, or null for nothing.
    */
   protected function getNodeFromTitle($title) {
     $query = \Drupal::entityQuery('node');
@@ -86,4 +88,5 @@ class DmcFlossContent implements DmcFlossContentInterface {
     }
 
   }
+
 }
