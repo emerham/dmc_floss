@@ -27,9 +27,16 @@ Status can be Have, Need
 ## Create new Floss 
 
 create {floss_id}
-  What is the color name?
-{color}
-  What is the inventory count?
-{count}
+  
+  What is the color name? {color}
+  
+  What is the inventory count? {count}
+  
   What is the inventory status?
 {status}
+
+## Get report of Floss in Need
+
+Open Status report
+
+How many are missing
