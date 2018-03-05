@@ -57,8 +57,7 @@ class DmcFlossSubscriber implements EventSubscriberInterface {
           break;
 
         case 'AMAZON.HelpIntent':
-          // TODO add help text.
-          $response->respond('Help text goes here.')
+          $response->respond('You can ask for inventory status, update the inventory count, and change the inventory status.')
             ->endSession();
           break;
 
@@ -84,6 +83,36 @@ class DmcFlossSubscriber implements EventSubscriberInterface {
           }
           else {
             $response->respond('Sorry, no Floss with that ID found.')
+              ->endSession();
+          }
+          break;
+        case 'UpdateCount':
+          $floss_id = $request->getSlot('floss_id');
+          $count = $request->getSlot('AMAZON.NUMBER');
+          $update_count = $this->dmcFlossContent->updateInventory($floss_id, $count);
+          if ($update_count) {
+            $response->respond('Update successful for ' . $floss_id . '. Set count to ' . $count)
+              ->withCard('Floss', 'Update successful for ' . $floss_id . '. Set count to ' . $count)
+              ->endSession();
+          }
+          else {
+            $response->respond('Sorry, something went wrong.')
+              ->withCard('Floss', 'Sorry, something went wrong.')
+              ->endSession();
+          }
+          break;
+        case 'UpdateStatus':
+          $floss_id = $request->getSlot('floss_id');
+          $status = $request->getSlot('status');
+          $update_status = $this->dmcFlossContent->updateStatus($floss_id, $status);
+          if ($update_status) {
+            $response->respond('Update successful for ' . $floss_id . '. Status is now ' . $status)
+              ->withCard('Floss', 'Update successful. Floss ' . $floss_id . ' has status of ' . $status)
+              ->endSession();
+          }
+          else {
+            $response->respond('Sorry, something went wrong.')
+              ->withCard('Floss', 'Sorry, something went wrong.')
               ->endSession();
           }
           break;
