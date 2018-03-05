@@ -21,6 +21,7 @@ class DmcFlossContent implements DmcFlossContentInterface {
       return [
         'status' => $node->get('field_dmc_inventory_status')->value,
         'count' => $node->get('field_dmc_quantity')->value,
+        'color' => $node->get('field_dmc_color_name')->value,
       ];
     }
   }
@@ -53,6 +54,12 @@ class DmcFlossContent implements DmcFlossContentInterface {
       return FALSE;
     }
     else {
+      if ($status === 'have') {
+        $status = 'h';
+      }
+      else {
+        $status = 'n';
+      }
       // Update the status of the floss.
       $node->field_dmc_inventory_status->value = $status;
       // Save the updated data back to the database.
@@ -69,7 +76,8 @@ class DmcFlossContent implements DmcFlossContentInterface {
    *   The title to search on.
    *
    * @return \Drupal\Core\Entity\EntityInterface|\Drupal\dmc_floss\DmcFlossContent|null
-   *   Return a node object loaded from the given floss ID, or null for nothing.
+   *   Return a node object loaded from the given floss ID, or null for
+   *   nothing.
    */
   protected function getNodeFromTitle($title) {
     $query = \Drupal::entityQuery('node');
