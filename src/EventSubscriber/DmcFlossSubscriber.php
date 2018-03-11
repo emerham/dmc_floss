@@ -86,6 +86,7 @@ class DmcFlossSubscriber implements EventSubscriberInterface {
               ->endSession();
           }
           break;
+
         case 'UpdateCount':
           $floss_id = $request->getSlot('floss_id');
           $count = $request->getSlot('AMAZON.NUMBER');
@@ -101,6 +102,7 @@ class DmcFlossSubscriber implements EventSubscriberInterface {
               ->endSession();
           }
           break;
+
         case 'UpdateStatus':
           $floss_id = $request->getSlot('floss_id');
           $status = $request->getSlot('status');
