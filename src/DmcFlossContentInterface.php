@@ -44,4 +44,12 @@ interface DmcFlossContentInterface {
    */
   public function updateStatus($floss_id, $status);
 
+  /**
+   * Get a list of nodes that all have status of need.
+   *
+   * @return array
+   *   Returns an array of node id's.
+   */
+  public function inventoryReport();
+
 }

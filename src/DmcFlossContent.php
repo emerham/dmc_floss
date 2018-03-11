@@ -70,6 +70,18 @@ class DmcFlossContent implements DmcFlossContentInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function inventoryReport() {
+    $query = \Drupal::entityQuery('node');
+    $query->condition('type', 'dmc_thread_color');
+    $query->condition('status', 1);
+    $query->condition('field_dmc_inventory_status', 'n');
+    $query->range(0, 5);
+    return $query->execute();
+  }
+
+  /**
    * Load a node of type dmc_thread_color with the given title.
    *
    * @param string $title
