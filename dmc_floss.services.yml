@@ -1,7 +1,7 @@
 services:
   dmc_floss.floss_content:
     class: Drupal\dmc_floss\DmcFlossContent
-    arguments: []
+    arguments: ['@entity.query']
   dmc_floss.event_subscriber:
     class: Drupal\dmc_floss\EventSubscriber\DmcFlossSubscriber
     arguments: ['@dmc_floss.floss_content']
