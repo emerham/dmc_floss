@@ -52,4 +52,18 @@ interface DmcFlossContentInterface {
    */
   public function inventoryReport();
 
+  /**
+   * Create floss content in the database.
+   *
+   * @param int $floss_id
+   *  The Floss ID to create
+   * @param int $count
+   *  The inventory amount to add.
+   * @param string $status
+   *  The status of if we have it or not.
+   *
+   * @return bool
+   *  True if we succeeded in making the node, false if we ran into an issue.
+   */
+  public function createFloss($floss_id, $count, $status, $color_name);
 }

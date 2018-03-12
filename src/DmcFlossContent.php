@@ -61,6 +61,7 @@ class DmcFlossContent implements DmcFlossContentInterface {
         $status = 'n';
       }
       // Update the status of the floss.
+      $node->setNewRevision(TRUE);
       $node->field_dmc_inventory_status->value = $status;
       // Save the updated data back to the database.
       $node->save();
@@ -78,7 +79,27 @@ class DmcFlossContent implements DmcFlossContentInterface {
     $query->condition('status', 1);
     $query->condition('field_dmc_inventory_status', 'n');
     $query->range(0, 5);
-    return $query->execute();
+    $nodes = node::loadMultiple($query->execute());
+    return $nodes;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function createFloss($floss_id, $count, $status, $color_name) {
+    // Create an array of the values we will use for the entity.
+    $values = [
+      'type' => 'dmc_thread_color',
+      'title' => $floss_id,
+      'field_dmc_inventory_status' => $status,
+      'field_dmc_quantity' => $count,
+      'field_dmc_color_name' => $color_name,
+      'uid' => 1,
+    ];
+    // Create the node object.
+    $node = node::create($values);
+    // Save the node object to the database.
+    $node->save();
   }
 
   /**
