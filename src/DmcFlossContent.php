@@ -37,6 +37,7 @@ class DmcFlossContent implements DmcFlossContentInterface {
     }
     else {
       // Update the field value for the given node.
+      $node->setNewRevision(TRUE);
       $node->field_dmc_quantity->value = $quantity;
       // Save the node back to the DB.
       $node->save();
