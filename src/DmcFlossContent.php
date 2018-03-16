@@ -2,12 +2,20 @@
 
 namespace Drupal\dmc_floss;
 
+
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\node\Entity\Node;
 
 /**
  * Class DmcFlossContent.
  */
 class DmcFlossContent implements DmcFlossContentInterface {
+
+  protected $entityTypeManager;
+
+  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+    $this->entityTypeManager = $entity_type_manager;
+  }
 
   /**
    * {@inheritdoc}
@@ -114,6 +122,15 @@ class DmcFlossContent implements DmcFlossContentInterface {
    *   nothing.
    */
   protected function getNodeFromTitle($title) {
+    // Do to entityQuery being depricated
+    // $query->getStorage('node')->loadByProperties(['type' => 'dmc_thread_color', 'status' => 1, 'title' => '150']);
+    $node = $this->entityTypeManager->getStorage('node')->loadByProperties([
+      'type' => 'dmc_thread_color',
+      'status' => 1,
+      'title' => $title,
+    ]);
+    return current($node);
+    /*
     $query = \Drupal::entityQuery('node');
     $query->condition('type', 'dmc_thread_color');
     $query->condition('status', 1);
@@ -128,6 +145,7 @@ class DmcFlossContent implements DmcFlossContentInterface {
     else {
       return NULL;
     }
+    */
 
   }
 
