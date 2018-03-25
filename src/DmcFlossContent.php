@@ -11,6 +11,11 @@ use Drupal\node\Entity\Node;
  */
 class DmcFlossContent implements DmcFlossContentInterface {
 
+  /**
+   * Entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
   protected $entityTypeManager;
 
   public function __construct(EntityTypeManagerInterface $entity_type_manager) {
