@@ -106,7 +106,8 @@ class DmcFlossContent implements DmcFlossContentInterface {
       'uid' => 1,
     ];
     // Create the node object.
-    $node = node::create($values);
+    //$node = node::create($values);
+    $node = $this->entityTypeManager->getStorage('node')->create($values);
     // Save the node object to the database.
     $node->save();
   }
@@ -129,7 +130,7 @@ class DmcFlossContent implements DmcFlossContentInterface {
       'status' => 1,
       'title' => $title,
     ]);
-    return current($node);
+    return reset($node);
     /*
     $query = \Drupal::entityQuery('node');
     $query->condition('type', 'dmc_thread_color');
