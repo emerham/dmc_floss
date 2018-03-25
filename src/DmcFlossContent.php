@@ -136,22 +136,6 @@ class DmcFlossContent implements DmcFlossContentInterface {
       'title' => $title,
     ]);
     return reset($node);
-    /*
-    $query = \Drupal::entityQuery('node');
-    $query->condition('type', 'dmc_thread_color');
-    $query->condition('status', 1);
-    // Pass the floss number for the title.
-    $query->condition('title', $title);
-    // Gets all the NID's that match our query.
-    $node_id = $query->execute();
-    // Load all the data from the node.
-    if (!empty($node_id)) {
-      return node::load(current($node_id));
-    }
-    else {
-      return NULL;
-    }
-    */
 
   }
 

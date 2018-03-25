@@ -72,7 +72,7 @@ class DmcFlossSubscriber implements EventSubscriberInterface {
           if ($inventory) {
             if ($inventory['count'] > 0 && $inventory['status'] == 'h') {
               $response->respond('You have ' . $inventory['count'])
-                ->withCard('Floss', 'You have ' . $inventory['count'])
+                ->withCard('Floss', 'You have ' . $inventory['count'] . ' of ' . $inventory['color'])
                 ->endSession();
             }
             else {
