@@ -71,7 +71,7 @@ class DmcFlossSubscriber implements EventSubscriberInterface {
             ]);
           if ($inventory) {
             if ($inventory['count'] > 0 && $inventory['status'] == 'h') {
-              $response->respond('You have ' . $inventory['count'])
+              $response->respond('You have ' . $inventory['count'] . ' of ' . $inventory['color'])
                 ->withCard('Floss', 'You have ' . $inventory['count'] . ' of ' . $inventory['color'])
                 ->endSession();
             }
@@ -117,6 +117,11 @@ class DmcFlossSubscriber implements EventSubscriberInterface {
               ->withCard('Floss', 'Sorry, something went wrong.')
               ->endSession();
           }
+          break;
+        case 'InventoryReport':
+          $response->respond('')
+            ->withCard('Floss', '');
+          // TODO: Finish with the speach reply part.
           break;
       }
     }
