@@ -88,6 +88,13 @@ class DmcFlossContent implements DmcFlossContentInterface {
    * {@inheritdoc}
    */
   public function inventoryReport() {
+    $floss = $this->entityTypeManager->getStorage('node')->loadByProperties([
+      'type' => 'dmc_thread_color',
+      'status' => 1,
+      'field_dmc_inventory_status' => 'n',
+    ]);
+    // TODO: finish with the results of the nodes, count and titles
+    /*
     $query = \Drupal::entityQuery('node');
     $query->condition('type', 'dmc_thread_color');
     $query->condition('status', 1);
@@ -95,6 +102,7 @@ class DmcFlossContent implements DmcFlossContentInterface {
     $query->range(0, 5);
     $nodes = node::loadMultiple($query->execute());
     return $nodes;
+    */
   }
 
   /**
