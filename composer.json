@@ -1,0 +1,12 @@
+{
+    "name": "emerham/dmc_floss",
+    "description": "Drupal module to add Alexa support for DMC Floss Content",
+    "type": "drupal-module",
+    "authors": [
+        {
+            "name": "Matthew Brabham",
+            "email": "matthew.brabham@oregonstate.edu"
+        }
+    ],
+    "require": {}
+}
