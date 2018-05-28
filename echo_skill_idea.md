@@ -2,26 +2,42 @@
 
 ## Check inventory for a number
 
-check inventory for {number}
-check on {number}
-what is the status of {number}
-how many {number} do I have
+Check inventory for {floss_id}
+
+Check on {floss_id}
+
+What is the status of {floss_id}
+
+How many {floss_id} do I have
 
 ## Update Inventory Quantity
 
-update {number} set quantity to {quantity}
-set quantity to {quantity} for {number}
+Update {floss_id} set quantity to {count}
+
+Set quantity to {count} for {floss_id}
 
 ## Update Status
 
-set {number} to {status}
+Set status to {status} for {floss_id}
+
+Update {floss_id} set status to {status}
 
 Status can be Have, Need
 
 ## Create new Floss 
 
-create {number}
-  What is the color name?
-{color}
+create {floss_id}
   
+  What is the color name? {color}
+  
+  What is the inventory count? {count}
+  
+  What is the inventory status?
+{status}
+
+## Get report of Floss in Need
+
+Open Status report
+
+How many are missing
 
