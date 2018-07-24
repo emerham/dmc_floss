@@ -1,9 +1,9 @@
 services:
   dmc_floss.floss_content:
     class: Drupal\dmc_floss\DmcFlossContent
-    arguments: ['@entity_type.manager']
+    arguments: ['@entity_type.manager', '@logger.factory']
   dmc_floss.event_subscriber:
     class: Drupal\dmc_floss\EventSubscriber\DmcFlossSubscriber
-    arguments: ['@dmc_floss.floss_content']
+    arguments: ['@dmc_floss.floss_content', '@logger.factory']
     tags:
       - { name: event_subscriber }
