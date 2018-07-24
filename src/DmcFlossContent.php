@@ -2,9 +2,8 @@
 
 namespace Drupal\dmc_floss;
 
-
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\node\Entity\Node;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 
 /**
  * Class DmcFlossContent.
@@ -18,8 +17,24 @@ class DmcFlossContent implements DmcFlossContentInterface {
    */
   protected $entityTypeManager;
 
-  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+  /**
+   * The Logger service.
+   *
+   * @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
+   */
+  protected $logger;
+
+  /**
+   * DmcFlossContent constructor.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The Entity type manager service.
+   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger
+   *   The logger factory service.
+   */
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, LoggerChannelFactoryInterface $logger) {
     $this->entityTypeManager = $entity_type_manager;
+    $this->logger = $logger->get('dmc_floss');
   }
 
   /**
@@ -78,7 +93,11 @@ class DmcFlossContent implements DmcFlossContentInterface {
       $node->setNewRevision(TRUE);
       $node->field_dmc_inventory_status->value = $status;
       // Save the updated data back to the database.
-      $node->save();
+      try {
+        $node->save();
+      } catch (\Exception $e) {
+        $this->logger->error($e->getMessage());
+      }
       // Return True.
       return TRUE;
     }
@@ -95,6 +114,7 @@ class DmcFlossContent implements DmcFlossContentInterface {
     ]);
     // TODO: finish with the results of the nodes, count and titles
     /*
+     * $query->condition('type', 'dmc_thread_color')->condition('status', '1')->range(10,10);
     $query = \Drupal::entityQuery('node');
     $query->condition('type', 'dmc_thread_color');
     $query->condition('status', 1);
@@ -120,9 +140,17 @@ class DmcFlossContent implements DmcFlossContentInterface {
     ];
     // Create the node object.
     //$node = node::create($values);
-    $node = $this->entityTypeManager->getStorage('node')->create($values);
+    try {
+      $node = $this->entityTypeManager->getStorage('node')->create($values);
+    } catch (\Exception $e) {
+      $this->logger->error($e->getMessage());
+    }
     // Save the node object to the database.
-    $node->save();
+    try {
+      $node->save();
+    } catch (\Exception $e) {
+      $this->logger->error($e->getMessage());
+    }
   }
 
   /**
