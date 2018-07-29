@@ -129,9 +129,11 @@ class DmcFlossSubscriber implements EventSubscriberInterface {
           }
           break;
         case 'InventoryReport':
-          $response->respond('')
-            ->withCard('Floss', '');
-          // TODO: Finish with the speach reply part.
+          $report = $this->dmcFlossContent->inventoryReport();
+          $missing_floss = implode(',', array_keys($report['floss']));
+          $reply_text = 'You currently are missing ' . $report['count'] . '. They are ' . $missing_floss;
+          $response->respond($reply_text)
+            ->withCard('Floss', 'Current size of floss that is needed is ' . $report['count']);
           break;
       }
     }
