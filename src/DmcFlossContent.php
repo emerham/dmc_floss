@@ -138,12 +138,11 @@ class DmcFlossContent implements DmcFlossContentInterface {
     $size = count($floss_nodes);
     $floss_name_color = [];
     if ($size > 0) {
-      $floss_nodes = $this->entityTypeManager->getStorage('node')
+      $floss_nodes = $this->entityTypeManager
+        ->getStorage('node')
         ->loadMultiple($floss_nodes);
       foreach ($floss_nodes as $node) {
-        $floss_name_color[] = [
-          $node->get('title')->value => $node->get('field_dmc_color_name')->value,
-        ];
+        $floss_name_color[$node->get('title')->value] = $node->get('field_dmc_color_name')->value;
       }
     }
     return ['count' => $size, 'floss' => $floss_name_color];
