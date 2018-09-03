@@ -66,7 +66,7 @@ class DmcFlossContent implements DmcFlossContentInterface {
    */
   protected function getNodeFromTitle($title) {
     // Do to entityQuery being depricated
-    // $query->getStorage('node')->loadByProperties(['type' => 'dmc_thread_color', 'status' => 1, 'title' => '150']);
+    // $query->getStorage('node')->loadByProperties(['type' => 'dmc_thread_color', 'status' => 1, 'title' => '150']);.
     $node = $this->entityTypeManager->getStorage('node')->loadByProperties([
       'type' => 'dmc_thread_color',
       'status' => 1,
@@ -116,7 +116,8 @@ class DmcFlossContent implements DmcFlossContentInterface {
       // Save the updated data back to the database.
       try {
         $node->save();
-      } catch (\Exception $e) {
+      }
+      catch (\Exception $e) {
         $this->logger->error($e->getMessage());
       }
       // Return True.
@@ -162,16 +163,18 @@ class DmcFlossContent implements DmcFlossContentInterface {
       'uid' => 1,
     ];
     // Create the node object.
-    //$node = node::create($values);
+    // $node = node::create($values);
     try {
       $node = $this->entityTypeManager->getStorage('node')->create($values);
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       $this->logger->error($e->getMessage());
     }
     // Save the node object to the database.
     try {
       $node->save();
-    } catch (\Exception $e) {
+    }
+    catch (\Exception $e) {
       $this->logger->error($e->getMessage());
     }
   }

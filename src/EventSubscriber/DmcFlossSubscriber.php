@@ -128,6 +128,7 @@ class DmcFlossSubscriber implements EventSubscriberInterface {
               ->endSession();
           }
           break;
+
         case 'InventoryReport':
           $report = $this->dmcFlossContent->inventoryReport();
           $missing_floss = implode(',', array_keys($report['floss']));
