@@ -5,6 +5,7 @@ namespace Drupal\dmc_floss\EventSubscriber;
 use Alexa\Request\IntentRequest;
 use Alexa\Request\SessionEndedRequest;
 use Drupal\alexa\AlexaEvent;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\dmc_floss\DmcFlossContentInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -21,13 +22,23 @@ class DmcFlossSubscriber implements EventSubscriberInterface {
   protected $dmcFlossContent;
 
   /**
+   * The Logger Factory.
+   *
+   * @var \Drupal\Core\Logger\LoggerChannelInterface
+   */
+  protected $logger;
+
+  /**
    * DmcFlossSubscriber constructor.
    *
    * @param \Drupal\dmc_floss\DmcFlossContentInterface $dmc_floss_content
    *   The DmcFlossContent object.
+   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
+   *   The logger factory service.
    */
-  public function __construct(DmcFlossContentInterface $dmc_floss_content) {
+  public function __construct(DmcFlossContentInterface $dmc_floss_content, LoggerChannelFactoryInterface $logger_factory) {
     $this->dmcFlossContent = $dmc_floss_content;
+    $this->logger = $logger_factory->get('dmc_floss');
   }
 
   /**
@@ -64,11 +75,10 @@ class DmcFlossSubscriber implements EventSubscriberInterface {
         case 'CheckStatus':
           $floss_id = $request->getSlot('floss_id');
           $inventory = $this->dmcFlossContent->checkInventory($floss_id);
-          \Drupal::logger('dmc_floss')
-            ->warning('Check Status was called with slot of @floss_id and we found @count', [
-              '@floss_id' => $floss_id,
-              '@count' => $inventory['count'],
-            ]);
+          $this->logger->warning('Check Status was called with slot of @floss_id and we found @count', [
+            '@floss_id' => $floss_id,
+            '@count' => $inventory['count'],
+          ]);
           if ($inventory) {
             if ($inventory['count'] > 0 && $inventory['status'] == 'h') {
               $response->respond('You have ' . $inventory['count'] . ' of ' . $inventory['color'])
@@ -118,10 +128,13 @@ class DmcFlossSubscriber implements EventSubscriberInterface {
               ->endSession();
           }
           break;
+
         case 'InventoryReport':
-          $response->respond('')
-            ->withCard('Floss', '');
-          // TODO: Finish with the speach reply part.
+          $report = $this->dmcFlossContent->inventoryReport();
+          $missing_floss = implode(',', array_keys($report['floss']));
+          $reply_text = 'You currently are missing ' . $report['count'] . '. They are ' . $missing_floss;
+          $response->respond($reply_text)
+            ->withCard('Floss', 'Current size of floss that is needed is ' . $report['count']);
           break;
       }
     }
@@ -129,10 +142,9 @@ class DmcFlossSubscriber implements EventSubscriberInterface {
       // @todo: Clean up any saved session state here.
     }
     else {
-      \Drupal::logger('dmc_floss')
-        ->warning('Request was not an expected request type: @type', [
-          '@type' => get_class($request),
-        ]);
+      $this->logger->warning('Request was not an expected request type: @type', [
+        '@type' => get_class($request),
+      ]);
     }
   }
 

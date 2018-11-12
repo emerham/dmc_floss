@@ -2,9 +2,8 @@
 
 namespace Drupal\dmc_floss;
 
-
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\node\Entity\Node;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 
 /**
  * Class DmcFlossContent.
@@ -18,8 +17,24 @@ class DmcFlossContent implements DmcFlossContentInterface {
    */
   protected $entityTypeManager;
 
-  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+  /**
+   * The Logger service.
+   *
+   * @var \Drupal\Core\Logger\LoggerChannelFactoryInterface
+   */
+  protected $logger;
+
+  /**
+   * DmcFlossContent constructor.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The Entity type manager service.
+   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger
+   *   The logger factory service.
+   */
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, LoggerChannelFactoryInterface $logger) {
     $this->entityTypeManager = $entity_type_manager;
+    $this->logger = $logger->get('dmc_floss');
   }
 
   /**
@@ -37,6 +52,27 @@ class DmcFlossContent implements DmcFlossContentInterface {
         'color' => $node->get('field_dmc_color_name')->value,
       ];
     }
+  }
+
+  /**
+   * Load a node of type dmc_thread_color with the given title.
+   *
+   * @param string $title
+   *   The title to search on.
+   *
+   * @return \Drupal\Core\Entity\EntityInterface|\Drupal\dmc_floss\DmcFlossContent|null
+   *   Return a node object loaded from the given floss ID, or null for
+   *   nothing.
+   */
+  protected function getNodeFromTitle($title) {
+    // Do to entityQuery being depricated
+    // $query->getStorage('node')->loadByProperties(['type' => 'dmc_thread_color', 'status' => 1, 'title' => '150']);.
+    $node = $this->entityTypeManager->getStorage('node')->loadByProperties([
+      'type' => 'dmc_thread_color',
+      'status' => 1,
+      'title' => $title,
+    ]);
+    return reset($node);
   }
 
   /**
@@ -78,7 +114,12 @@ class DmcFlossContent implements DmcFlossContentInterface {
       $node->setNewRevision(TRUE);
       $node->field_dmc_inventory_status->value = $status;
       // Save the updated data back to the database.
-      $node->save();
+      try {
+        $node->save();
+      }
+      catch (\Exception $e) {
+        $this->logger->error($e->getMessage());
+      }
       // Return True.
       return TRUE;
     }
@@ -88,21 +129,24 @@ class DmcFlossContent implements DmcFlossContentInterface {
    * {@inheritdoc}
    */
   public function inventoryReport() {
-    $floss = $this->entityTypeManager->getStorage('node')->loadByProperties([
-      'type' => 'dmc_thread_color',
-      'status' => 1,
-      'field_dmc_inventory_status' => 'n',
-    ]);
-    // TODO: finish with the results of the nodes, count and titles
-    /*
-    $query = \Drupal::entityQuery('node');
-    $query->condition('type', 'dmc_thread_color');
-    $query->condition('status', 1);
-    $query->condition('field_dmc_inventory_status', 'n');
-    $query->range(0, 5);
-    $nodes = node::loadMultiple($query->execute());
-    return $nodes;
-    */
+    $floss_nodes = $this->entityTypeManager->getStorage('node')
+      ->getQuery()
+      ->condition('type', 'dmc_thread_color')
+      ->condition('status', 1)
+      ->condition('field_dmc_inventory_status', 'n')
+      ->range(0, 5)
+      ->execute();
+    $size = count($floss_nodes);
+    $floss_name_color = [];
+    if ($size > 0) {
+      $floss_nodes = $this->entityTypeManager
+        ->getStorage('node')
+        ->loadMultiple($floss_nodes);
+      foreach ($floss_nodes as $node) {
+        $floss_name_color[$node->get('title')->value] = $node->get('field_dmc_color_name')->value;
+      }
+    }
+    return ['count' => $size, 'floss' => $floss_name_color];
   }
 
   /**
@@ -119,32 +163,20 @@ class DmcFlossContent implements DmcFlossContentInterface {
       'uid' => 1,
     ];
     // Create the node object.
-    //$node = node::create($values);
-    $node = $this->entityTypeManager->getStorage('node')->create($values);
+    // $node = node::create($values);
+    try {
+      $node = $this->entityTypeManager->getStorage('node')->create($values);
+    }
+    catch (\Exception $e) {
+      $this->logger->error($e->getMessage());
+    }
     // Save the node object to the database.
-    $node->save();
-  }
-
-  /**
-   * Load a node of type dmc_thread_color with the given title.
-   *
-   * @param string $title
-   *   The title to search on.
-   *
-   * @return \Drupal\Core\Entity\EntityInterface|\Drupal\dmc_floss\DmcFlossContent|null
-   *   Return a node object loaded from the given floss ID, or null for
-   *   nothing.
-   */
-  protected function getNodeFromTitle($title) {
-    // Do to entityQuery being depricated
-    // $query->getStorage('node')->loadByProperties(['type' => 'dmc_thread_color', 'status' => 1, 'title' => '150']);
-    $node = $this->entityTypeManager->getStorage('node')->loadByProperties([
-      'type' => 'dmc_thread_color',
-      'status' => 1,
-      'title' => $title,
-    ]);
-    return reset($node);
-
+    try {
+      $node->save();
+    }
+    catch (\Exception $e) {
+      $this->logger->error($e->getMessage());
+    }
   }
 
 }
