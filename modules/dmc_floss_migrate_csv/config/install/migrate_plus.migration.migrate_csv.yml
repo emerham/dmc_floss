@@ -61,7 +61,7 @@ destination:
   # used to create a node entity.
   plugin: entity:node
 # List any optional or required migration dependencies.
-# Requried means that 100% of the content must be migrated
+# Required means that 100% of the content must be migrated
 # Optional means that that the other dependency should be run first but if there
 # are items from the dependant migration that were not successful, it will still
 # run the migration.
