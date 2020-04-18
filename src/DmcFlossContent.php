@@ -65,7 +65,7 @@ class DmcFlossContent implements DmcFlossContentInterface {
    *   nothing.
    */
   protected function getNodeFromTitle($title) {
-    // Do to entityQuery being depricated
+    // Do to entityQuery being deprecated
     // $query->getStorage('node')->loadByProperties(['type' => 'dmc_thread_color', 'status' => 1, 'title' => '150']);.
     $node = $this->entityTypeManager->getStorage('node')->loadByProperties([
       'type' => 'dmc_thread_color',
