@@ -85,7 +85,7 @@ class DmcFlossMigrate extends SqlBase {
    * {@inheritdoc}
    */
   public function fields() {
-    $fields = [
+    return [
       'nid' => $this->t('Node ID'),
       'vid' => $this->t('Version ID'),
       'type' => $this->t('Type'),
@@ -103,7 +103,6 @@ class DmcFlossMigrate extends SqlBase {
       'field_quantity' => $this->t('Floss Quantity'),
       'field_have_need' => $this->t('Inventory Status'),
     ];
-    return $fields;
   }
 
   /**
